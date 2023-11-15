@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "user")
-@Entity(name = "user")
+@Table(name = "users")
+@Entity(name = "users")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +18,10 @@ public class User {
     private String name;
     private String email;
     private String password;
+
+    public User(UserRequestDTO data) {
+        this.name = data.name();
+        this.email = data.email();
+        this.password = data.password();
+    }
 }

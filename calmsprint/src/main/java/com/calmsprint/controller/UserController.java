@@ -1,11 +1,11 @@
 package com.calmsprint.controller;
 
+import com.calmsprint.user.User;
 import com.calmsprint.user.UserRepository;
+import com.calmsprint.user.UserRequestDTO;
 import com.calmsprint.user.UserResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +20,11 @@ public class UserController {
     public List<UserResponseDTO> getUsers() {
         List<UserResponseDTO> userList = repository.findAll().stream().map(UserResponseDTO::new).toList();
         return userList;
+    }
+
+    @PostMapping
+    public void saveUser(@RequestBody UserRequestDTO data) {
+        User userData = new User(data);
+        repository.save(userData);
     }
 }
