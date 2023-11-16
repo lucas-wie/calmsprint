@@ -1,5 +1,6 @@
 package com.calmsprint.controller;
 
+import com.calmsprint.services.AuthService;
 import com.calmsprint.user.User;
 import com.calmsprint.user.UserRepository;
 import com.calmsprint.user.UserRequestDTO;
@@ -10,21 +11,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
 public class UserController {
 
     @Autowired
     private UserRepository repository;
 
-    @GetMapping
+    @Autowired
+    private AuthService authService;
+
+    @GetMapping("/user")
     public List<UserResponseDTO> getUsers() {
         List<UserResponseDTO> userList = repository.findAll().stream().map(UserResponseDTO::new).toList();
         return userList;
     }
 
-    @PostMapping
+    @PostMapping("/user")
     public void saveUser(@RequestBody UserRequestDTO data) {
         User userData = new User(data);
         repository.save(userData);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam String email, @RequestParam String password) {
+        if (authService.authenticateUser(email, password)) {
+            return "Login successful";
+        }
+        else {
+            return "Invalid email or login";
+        }
     }
 }
