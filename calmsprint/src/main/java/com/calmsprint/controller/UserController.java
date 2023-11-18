@@ -19,18 +19,21 @@ public class UserController {
     @Autowired
     private AuthService authService;
 
+    @CrossOrigin(origins = "*", allowCredentials = "false")
     @GetMapping("/user")
     public List<UserResponseDTO> getUsers() {
         List<UserResponseDTO> userList = repository.findAll().stream().map(UserResponseDTO::new).toList();
         return userList;
     }
 
+    @CrossOrigin(origins = "*", allowCredentials = "false")
     @PostMapping("/user")
     public void saveUser(@RequestBody UserRequestDTO data) {
         User userData = new User(data);
         repository.save(userData);
     }
 
+    @CrossOrigin(origins = "*", allowCredentials = "false")
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password) {
         if (authService.authenticateUser(email, password)) {

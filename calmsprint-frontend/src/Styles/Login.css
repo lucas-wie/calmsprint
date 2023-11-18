@@ -1,0 +1,31 @@
+/* src/Login.css */
+.container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .form {
+    display: inline-block;
+    text-align: left;
+    margin-top: 20px;
+  }
+  
+  .form label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+  }
+  
