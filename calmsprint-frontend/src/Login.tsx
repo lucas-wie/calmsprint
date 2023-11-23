@@ -1,30 +1,31 @@
 // src/Login.tsx
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Styles/Login.css';
+
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null); // Adiciona estado para mensagem de erro
+    const navigate = useNavigate(); // Utilize useNavigate para obter a função de navegação
     
-    // Utilize useNavigate para obter a função de navegação
-    //const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
             // Implemente a lógica de chamada para o backend aqui
             const response = await fetch(`http://localhost:8080/login?email=${email}&password=${password}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
         
             if(response.ok) {
                 const result = await response;
                 console.log(result); // Exiba o resultado no console ou trate conforme necessário
-                <Navigate to="/dashboard" /> 
+                // Se o login for bem-sucedido, use a função navigate para redirecionar para /dashboard
+                navigate('/dashboard');
             }
             else {
                 console.error('Erro ao fazer login:', response.statusText);
@@ -38,31 +39,34 @@ const Login: React.FC = () => {
 
     return (
         <div className="container">
-        <h2>Login</h2>
-        <form className="form">
-            <div>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div>
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-            <button type="button" onClick={handleLogin}>
-                Login
-            </button>
-        </form>
+            <h2>Login</h2>
+            <form className="form">
+                <div>
+                    <label htmlFor="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
+                <button type="button" onClick={handleLogin}>
+                    Login
+                </button>
+                <div className="register-link" onClick={() => navigate('/register')}>
+                    Registrar-se
+                </div>
+            </form>
         </div>
     );
 };

@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './Login';
 import Dashboard from './Dashboard';
+import Register from './Register';
 import './App.css'
 
 function App() {
@@ -20,17 +21,18 @@ function App() {
     <Router>
       <div>
         <h1>Calmsprint</h1>
+        <Routes>
           {/* Use Navigate para redirecionar para /login se não estiver autenticado */}
           {!isAuthenticated ? 
           (
-            <Navigate to="/login" />
+            <Route path="/login" element={<Login />} />
           ) : 
           ( 
-            <Navigate to="/dashboard" /> 
+            <Route path="/dashboard" element={<Dashboard />} />
           )}
-        <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>
