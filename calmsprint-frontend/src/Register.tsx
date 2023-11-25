@@ -35,7 +35,6 @@ const Register: React.FC = () => {
 
   return (
     <div className="container">
-      <h2>Registrar-se</h2>
       <form className="form">
         <div>
           <label htmlFor="name">Nome:</label>

@@ -1,0 +1,24 @@
+/* src/Styles/BoardKanban.css */
+.board-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.board-column {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin: 10px;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: move;
+}
+
+.card.active {
+  border: 2px solid #4caf50;
+}

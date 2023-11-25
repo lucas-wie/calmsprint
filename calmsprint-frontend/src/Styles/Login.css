@@ -29,17 +29,20 @@ button {
 
 .register-link {
   margin-top: 10px;
-  color: blue;
+  color: rgb(195, 195, 199);
   text-decoration: underline;
   cursor: pointer;
 }
 
 .form button {
-  background-color: #4CAF50;
+  background-color: #707070;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
+  display: flex;   /* inicia o display flex */
+  align-items: center; /* alinha os itens na vertical */
+  justify-content: center; /* alinha os itens na horizontal */
 } 
 
 

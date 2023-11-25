@@ -39,7 +39,6 @@ const Login: React.FC = () => {
 
     return (
         <div className="container">
-            <h2>Login</h2>
             <form className="form">
                 <div>
                     <label htmlFor="email">Email:</label>
