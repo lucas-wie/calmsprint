@@ -1,6 +1,8 @@
 package com.calmsprint.controller;
 
 import com.calmsprint.services.AuthService;
+import com.calmsprint.task.Task;
+import com.calmsprint.task.TaskResponseDTO;
 import com.calmsprint.user.User;
 import com.calmsprint.user.UserRepository;
 import com.calmsprint.user.UserRequestDTO;
@@ -27,6 +29,13 @@ public class UserController {
     }
 
     @CrossOrigin(origins = "*", allowCredentials = "false")
+    @GetMapping("/{email}")
+    public UserResponseDTO getUserByEmail(@PathVariable String email) {
+        User user = repository.findByEmail(email);
+        return new UserResponseDTO(user);
+    }
+
+    @CrossOrigin(origins = "*", allowCredentials = "false")
     @PostMapping("/user")
     public void saveUser(@RequestBody UserRequestDTO data) {
         User userData = new User(data);
@@ -35,12 +44,13 @@ public class UserController {
 
     @CrossOrigin(origins = "*", allowCredentials = "false")
     @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password) {
+    public UserResponseDTO login(@RequestParam String email, @RequestParam String password) {
         if (authService.authenticateUser(email, password)) {
-            return "Login successful";
+            User user = repository.findByEmail(email);
+            return new UserResponseDTO(user);
         }
         else {
-            return "Invalid email or login";
+            return null;
         }
     }
 }

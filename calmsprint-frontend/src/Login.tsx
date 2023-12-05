@@ -9,6 +9,7 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null); // Adiciona estado para mensagem de erro
     const navigate = useNavigate(); // Utilize useNavigate para obter a função de navegação
+    // const { getEmail } = useUser();
     
 
     const handleLogin = async () => {
@@ -20,7 +21,9 @@ const Login: React.FC = () => {
                     'Content-Type': 'application/json',
                 }
             });
-        
+            const user = await response.json();
+            // getEmail(user.email);
+            
             if(response.ok) {
                 const result = await response;
                 console.log(result); // Exiba o resultado no console ou trate conforme necessário
