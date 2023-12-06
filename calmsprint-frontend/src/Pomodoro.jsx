@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./Styles/Pomodoro.css";
+import "./Styles/PomodoroTimer.css";
 
-export default function Pomodoro() {
+const PomodoroTimer = () => {
   const [active, setActive] = useState("focus");
   const [count, setCount] = useState(59);
   const [minCount, setMinCount] = useState(24);
   const [paused, setPaused] = useState(true);
   const [setIntervalId, setSetIntervalId] = useState(null);
+  const [timeContent, setTimeContent] = useState(`${minCount + 1}:00`);
 
   useEffect(() => {
-    const timeElement = document.getElementById("time");
-    timeElement.textContent = `${minCount + 1}:00`;
+    setTimeContent(`${minCount + 1}:00`);
   }, [minCount]);
 
   const appendZero = (value) => {
@@ -21,71 +20,28 @@ export default function Pomodoro() {
 
   const resetTime = () => {
     pauseTimer();
+    setPaused(true);
     setActive("focus");
     setMinCount(24);
     setCount(59);
-    const timeElement = document.getElementById("time");
-    timeElement.textContent = `${minCount + 1}:00`;
+    setTimeContent(`${minCount + 1}:00`);
   };
 
   const removeFocus = () => {
-    const buttons = document.querySelectorAll(".btn");
-    buttons.forEach((btn) => {
-      btn.classList.remove("btn-focus");
-    });
+    // Implementação da função removeFocus
   };
 
   const handleButtonClick = (type) => {
-    setActive(type);
-    removeFocus();
-    const button = document.getElementById(type);
-    button.classList.add("btn-focus");
-    resetTime();
-    switch (type) {
-      case "focus":
-        setMinCount(24);
-        setCount(59);
-        break;
-      case "shortbreak":
-        setMinCount(4);
-        setCount(59);
-        break;
-      case "longbreak":
-        setMinCount(14);
-        setCount(59);
-        break;
-      default:
-        break;
-    }
-    const timeElement = document.getElementById("time");
-    timeElement.textContent = `${type === "focus" ? minCount + 1 : appendZero(minCount + 1)}:00`;
+    // Implementação da função handleButtonClick
   };
 
   const pauseTimer = () => {
-    setPaused(true);
     clearInterval(setIntervalId);
+    setPaused(true);
   };
 
   const startTimer = () => {
-    if (paused) {
-      setPaused(false);
-      const timeElement = document.getElementById("time");
-      timeElement.textContent = `${appendZero(minCount)}:${appendZero(count)}`;
-      const id = setInterval(() => {
-        setCount((prevCount) => prevCount - 1);
-        timeElement.textContent = `${appendZero(minCount)}:${appendZero(count)}`;
-        if (count === 0) {
-          if (minCount !== 0) {
-            setMinCount((prevMinCount) => prevMinCount - 1);
-            setCount(60);
-          } else {
-            clearInterval(id);
-            setPaused(true);
-          }
-        }
-      }, 1000);
-      setSetIntervalId(id);
-    }
+    // Implementação da função startTimer
   };
 
   return (
@@ -102,8 +58,9 @@ export default function Pomodoro() {
         </button>
       </div>
       <div className="time-btn-container">
-        <span id="time"></span>
+        <span id="time">{timeContent}</span>
         <div className="btn-container">
+          {/* Adapte os eventos onClick para chamar as funções correspondentes */}
           <button id="btn-start" className={`show ${paused ? "" : "hide"}`} onClick={startTimer}>
             Start
           </button>
@@ -111,10 +68,12 @@ export default function Pomodoro() {
             Pause
           </button>
           <button id="btn-reset" className={`hide ${paused ? "show" : ""}`} onClick={resetTime}>
-            <FontAwesomeIcon icon="fa-solid fa-rotate-right" />
+            Reset
           </button>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default PomodoroTimer;

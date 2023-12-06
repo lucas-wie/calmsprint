@@ -9,7 +9,6 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null); // Adiciona estado para mensagem de erro
     const navigate = useNavigate(); // Utilize useNavigate para obter a função de navegação
-    // const { getEmail } = useUser();
     
 
     const handleLogin = async () => {
@@ -22,13 +21,13 @@ const Login: React.FC = () => {
                 }
             });
             const user = await response.json();
-            // getEmail(user.email);
+            //console.log(user);
+            //console.log(user.id);
+            
             
             if(response.ok) {
-                const result = await response;
-                console.log(result); // Exiba o resultado no console ou trate conforme necessário
                 // Se o login for bem-sucedido, use a função navigate para redirecionar para /dashboard
-                navigate('/dashboard');
+                navigate('/dashboard', {state: {userID: user.id}});
             }
             else {
                 console.error('Erro ao fazer login:', response.statusText);
