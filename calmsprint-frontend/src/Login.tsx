@@ -40,8 +40,8 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="container">
-            <form className="form">
+        <div className="containerLogin">
+            <form className="formLogin">
                 <div>
                     <label htmlFor="email">Email:</label>
                     <input

@@ -38,11 +38,12 @@ button {
   color: #ffffff;
 }
 .time-btn-container {
-display: flex;
-flex-direction: column;
-margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2em;
 }
 #time {
+  margin-bottom: 1rem;
   text-align: center;
   color: #ffffff;
   font-size: 5em;

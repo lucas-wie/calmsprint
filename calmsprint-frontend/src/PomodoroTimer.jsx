@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import $ from 'jquery';
+import './Styles/PomodoroTimer.css'
 
 export default (props) => {
   const [time, setTime] = useState(25 * 60); // Tempo inicial em segundos
   const [running, setRunning] = useState(false);
+  const [timeSection, setTimeSection] = useState();
 
   useEffect(() => {
     let intervalId;
@@ -28,16 +30,46 @@ export default (props) => {
 
   const pauseTimer = () => {
     $('#btn-start').show();
-    $('#btn-start').hide();
-    $('#btn-pause').show();
+    $('#btn-pause').hide();
     $('#btn-reset').show();
     setRunning(false);
   };
 
-  const resetTimer = () => {
-    setTime(25 * 60);
+  const resetTimer = (time) => {
+    $('#btn-start').show();
+    $('#btn-pause').hide();
+    $('#btn-reset').hide();
+    setTime(time  * 60);
     setRunning(false);
   };
+
+  const handleButtonClick = (type) => {
+    switch (type) {
+      case "focus":
+        setTimeSection(25);
+        $('#focus').addClass("btn-focus");
+        $('#shortbreak').removeClass("btn-focus");
+        $('#longbreak').removeClass("btn-focus");
+        resetTimer(25);
+        break;
+      case "shortbreak":
+        setTimeSection(5);
+        $('#shortbreak').addClass("btn-focus");
+        $('#focus').removeClass("btn-focus");
+        $('#longbreak').removeClass("btn-focus");
+        resetTimer(5);
+        break;
+      case "longbreak":
+        setTimeSection(15);
+        $('#longbreak').addClass("btn-focus");
+        $('#focus').removeClass("btn-focus");
+        $('#shortbreak').removeClass("btn-focus");
+        resetTimer(15);
+        break;
+      default:
+        resetTimer(timeSection);
+        break;
+  }};
 
   const formatTime = () => {
     const minutes = Math.floor(time / 60);
@@ -46,19 +78,18 @@ export default (props) => {
   };
 
   return (
-
     <div className="container">
-      {/* <div className="section-container">
-        <button id="focus" className={`btn btn-timer ${active === "focus" ? "btn-focus" : ""}`} onClick={() => handleButtonClick("focus")}>
+      <div className="section-container">
+        <button id="focus" className={"btn btn-focus"} onClick={() => handleButtonClick("focus")}>
           Focus
         </button>
-        <button id="shortbreak" className={`btn btn-shortbreak ${active === "shortbreak" ? "btn-focus" : ""}`} onClick={() => handleButtonClick("shortbreak")}>
+        <button id="shortbreak" className={"btn"} onClick={() => handleButtonClick("shortbreak")}>
           Short Break
         </button>
-        <button id="longbreak" className={`btn btn-longbreak ${active === "longbreak" ? "btn-focus" : ""}`} onClick={() => handleButtonClick("longbreak")}>
+        <button id="longbreak" className={"btn"} onClick={() => handleButtonClick("longbreak")}>
           Long Break
         </button>
-      </div> */}
+      </div>
       <div className="time-btn-container">
         <span id="time">{formatTime()}</span>
         <div className="btn-container">
@@ -69,7 +100,7 @@ export default (props) => {
           <button id="btn-pause" onClick={pauseTimer}>
             Pause
           </button>
-          <button id="btn-reset" onClick={resetTimer}>
+          <button id="btn-reset" onClick={() => handleButtonClick("")}>
             Reset
           </button>
         </div>

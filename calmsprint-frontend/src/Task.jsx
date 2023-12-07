@@ -60,7 +60,7 @@ export default function Task({ task, index }) {
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "center", padding: 2 }}>
-                        <TextContent>{task.title}</TextContent>
+                        <TextContent>{task.text}</TextContent>
                     </div>
 
                     <Icons>

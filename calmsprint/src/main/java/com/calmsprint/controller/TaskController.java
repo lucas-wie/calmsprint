@@ -23,6 +23,13 @@ public class TaskController {
     }
 
     @CrossOrigin(origins = "*", allowCredentials = "false")
+    @GetMapping("/user/{id}")
+    public List<TaskResponseDTO> getTasksByUser(@PathVariable Long id) {
+        List<TaskResponseDTO> tasks = taskRepository.findByUserId(id).stream().map(TaskResponseDTO::new).toList();
+        return tasks;
+    }
+
+    @CrossOrigin(origins = "*", allowCredentials = "false")
     @GetMapping("/{id}")
     public TaskResponseDTO getTaskById(@PathVariable Long id) {
         Task task = taskRepository.findByTaskId(id);

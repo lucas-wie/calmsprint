@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./Column";
+import { json } from "react-router-dom";
 
 export default function BoardKanban(props) {
-    const [completed, setCompleted] = useState([]);
+    const [toDo, setTODO] = useState([]);
+    const [doing, setDoing] = useState([]);
     const [incomplete, setIncomplete] = useState([]);
+    const [done, setDone] = useState([]);
+    const userId = props.userId;
 
     useEffect(() => {
-        fetch("https://jsonplaceholder.typicode.com/todos")
+        fetch(`http://localhost:8080/tasks/user/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
           .then((response) => response.json())
           .then((json) => {
-            setCompleted(json.filter((task) => task.completed));
-            setIncomplete(json.filter((task) => !task.completed));
+            setTODO(json.filter((task) => task.status === 1));
+            setDoing(json.filter((task) => task.status === 2));
+            setDone(json.filter((task) => task.status === 3));
           });
     }, []);
 
@@ -21,23 +31,30 @@ export default function BoardKanban(props) {
         if (source.droppableId == destination.droppableId) return;
 
         // REMOVE FROM A SOURCE ARRAY
-        if (source.droppableId == 2) {
-            setCompleted(removeItemById(draggableId, completed));
+        if (source.droppableId == 1) {
+            setTODO(removeItemById(draggableId, toDo));
+        }
+        else if (source.droppableId == 2) {
+            setDoing(removeItemById(draggableId, doing));
         }
         else {
-            setIncomplete(removeItemById(draggableId, incomplete));
+            setDone(removeItemById(draggableId, done));
         }
 
         // GET ITEM
-        const task = findItemById(draggableId, [...incomplete, ...completed]);
+        const task = findItemById(draggableId, [...toDo, ...doing, ...done]);
 
         // ADD ITEM
-        if (destination.droppableId == 2) {
-            setCompleted([{ ...task, completed: !task.completed }, ...completed]);
-        } 
-        else {
-            setIncomplete([{ ...task, completed: !task.completed }, ...incomplete]);
+        if (destination.droppableId == 1) {
+            setTODO([{ ...task, toDo: task.status === 1 }, ...toDo]);
         }
+        else if (destination.droppableId == 2) {
+            setDoing([{ ...task, toDo: task.status === 2 }, ...doing]);
+        }
+        else {
+            setDone([{ ...task, toDo: task.status === 2 }, ...done]);
+        }
+        
     }
 
     function findItemById(id, array) {
@@ -50,7 +67,7 @@ export default function BoardKanban(props) {
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <h2 style={{ textAlign: "center" }}>PROGRESS BOARD</h2>
+            <h2 style={{ textAlign: "center" }}>Board</h2>
 
             <div
                 style={{
@@ -61,9 +78,9 @@ export default function BoardKanban(props) {
                 }}
             >
 
-                <Column title={"To do"} tasks={incomplete} id={"1"} />
-                <Column title={"Done"} tasks={completed} id={"2"} />
-                <Column title={"Backlog"} tasks={[]} id={"3"} />
+                <Column title={"To do"} tasks={toDo} id={"1"} />
+                <Column title={"Doing"} tasks={doing} id={"2"} />
+                <Column title={"Done"} tasks={done} id={"3"} />
             </div>
         </DragDropContext>
     )
