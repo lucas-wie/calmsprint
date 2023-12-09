@@ -1,18 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { Modal, Input, Button, notification  } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear } from '@fortawesome/free-solid-svg-icons/faGear';
 import $ from 'jquery';
 import './Styles/PomodoroTimer.css'
 
 export default (props) => {
-  const [time, setTime] = useState(25 * 60); // Tempo inicial em segundos
+  const [time, setTime] = useState(25 * 60);
   const [running, setRunning] = useState(false);
-  const [timeSection, setTimeSection] = useState();
+  const [timeSection, setTimeSection] = useState(time);
+  const [currentSection, setCurrentSection] = useState("focus");
+
+  const [timeFocus, setTimeFocus] = useState(25);
+  const [timeShortBreak, setTimeShortBreak] = useState(5);
+  const [timeLongBreak, setTimeLongBreak] = useState(15);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [notificationVisible, setNotificationVisible] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editedTimes, setEditedTimes] = useState({
+    focus: timeFocus,
+    shortBreak: timeShortBreak,
+    longBreak: timeLongBreak,
+  });
 
   useEffect(() => {
     let intervalId;
 
     if (running) {
       intervalId = setInterval(() => {
-        setTime(prevTime => prevTime - 1);
+        setTime((prevTime) => {
+          if (prevTime <= 0) {
+            setRunning(false);
+            setNotificationVisible(true); // Exibe a notificação quando atingir 00:00
+            return 0;
+          }
+          return prevTime - 10;
+        });
       }, 1000);
     } else {
       clearInterval(intervalId);
@@ -46,25 +70,28 @@ export default (props) => {
   const handleButtonClick = (type) => {
     switch (type) {
       case "focus":
-        setTimeSection(25);
+        setTimeSection(timeFocus);
+        setCurrentSection(type);
         $('#focus').addClass("btn-focus");
         $('#shortbreak').removeClass("btn-focus");
         $('#longbreak').removeClass("btn-focus");
-        resetTimer(25);
+        resetTimer(timeFocus);
         break;
       case "shortbreak":
-        setTimeSection(5);
+        setTimeSection(timeShortBreak);
+        setCurrentSection(type);
         $('#shortbreak').addClass("btn-focus");
         $('#focus').removeClass("btn-focus");
         $('#longbreak').removeClass("btn-focus");
-        resetTimer(5);
+        resetTimer(timeShortBreak);
         break;
       case "longbreak":
-        setTimeSection(15);
+        setTimeSection(timeLongBreak);
+        setCurrentSection(type);
         $('#longbreak').addClass("btn-focus");
         $('#focus').removeClass("btn-focus");
         $('#shortbreak').removeClass("btn-focus");
-        resetTimer(15);
+        resetTimer(timeLongBreak);
         break;
       default:
         resetTimer(timeSection);
@@ -75,6 +102,58 @@ export default (props) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+      setIsModalVisible(false);
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleEditTimer = () => {
+    setTimeFocus(editedTimes.focus);
+    setTimeShortBreak(editedTimes.shortBreak);
+    setTimeLongBreak(editedTimes.longBreak);
+    
+    switch (currentSection) {
+      case "focus":
+        resetTimer(editedTimes.focus);
+        break;
+        case "shortbreak":
+        resetTimer(editedTimes.shortBreak);
+        break;
+      case "longbreak":
+        resetTimer(editedTimes.longBreak);
+        break;
+      default:
+        break;
+    }
+    closeModal();
+  };
+
+  // Função para exibir a notificação
+  const showNotification = () => {
+    notification.open({
+      message: 'Sessão finalizada, hora de descansar!',
+      description: 'Clique em "Ok" para fechar.',
+      onClick: () => {
+        notification.destroy();
+      },
+    });
+  };
+
+  const closeNotification = () => {
+    setNotificationVisible(false);
   };
 
   return (
@@ -92,6 +171,7 @@ export default (props) => {
       </div>
       <div className="time-btn-container">
         <span id="time">{formatTime()}</span>
+
         <div className="btn-container">
           {/* Adapte os eventos onClick para chamar as funções correspondentes */}
           <button id="btn-start" onClick={startTimer}>
@@ -104,8 +184,98 @@ export default (props) => {
             Reset
           </button>
         </div>
-      </div>
-    </div>
 
+        <div className='container-btn-edit-timer'>
+          <button id="btn-edit-timer" onClick={openModal}>
+            Config
+          </button>
+        </div>
+
+        {/* MODAL CONFIGURE TIMER */}
+        <Modal
+          open={modalIsOpen}
+          onCancel={closeModal}
+          title="Configure Timer"
+          footer={[
+            <Button key="save" type="primary" onClick={handleEditTimer}>
+              Save
+            </Button>,
+            <Button key="cancel" onClick={closeModal}>
+              Cancel
+            </Button>
+          ]}
+        >
+          <label>
+            Focus Time (minutes):
+            <Input
+              type="number"
+              min="0"
+              value={editedTimes.focus}
+              onChange={(e) =>
+                setEditedTimes({ ...editedTimes, focus: parseInt(e.target.value) })
+              }
+            />
+          </label>
+          <br />
+          <label>
+            Short Break Time (minutes):
+            <Input
+              type="number"
+              min="0"
+              value={editedTimes.shortBreak}
+              onChange={(e) =>
+                setEditedTimes({
+                  ...editedTimes,
+                  shortBreak: parseInt(e.target.value),
+                })
+              }
+            />
+          </label>
+          <br />
+          <label>
+            Long Break Time (minutes):
+            <Input
+              type="number"
+              min="0"
+              value={editedTimes.longBreak}
+              onChange={(e) =>
+                setEditedTimes({ ...editedTimes, longBreak: parseInt(e.target.value) })
+              }
+            />
+          </label>
+        </Modal>
+      </div>
+
+      {/* MODAL NOTIFICATION */}
+      <Modal
+          open={notificationVisible}
+          onCancel={closeNotification}
+          footer={[
+            <Button onClick={closeNotification}>Ok</Button>
+          ]}
+        >
+          {notificationVisible && currentSection === "focus" && (
+            <div className="notification-container">
+              <div className="notification-content">
+                <h2>Sessão finalizada, hora de descansar!</h2>
+              </div>
+            </div>
+          )}
+          {notificationVisible && currentSection === "shortbreak" && (
+            <div className="notification-container">
+              <div className="notification-content">
+                <h2>Sessão finalizada, hora de focar!</h2>
+              </div>
+            </div>
+          )}
+          {notificationVisible && currentSection === "longbreak" && (
+            <div className="notification-container">
+              <div className="notification-content">
+                <h2>Sessão finalizada, hora de focar!</h2>
+              </div>
+            </div>
+          )}
+        </Modal>
+    </div>
   );
 };

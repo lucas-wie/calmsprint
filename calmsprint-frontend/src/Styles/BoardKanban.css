@@ -1,7 +1,38 @@
 /* src/Styles/BoardKanban.css */
 .board-container {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-around;
+  align-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: min(90%, 1024px);
+}
+
+.header-board-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.header-board-container-button {
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #1b1b1b;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.kanban-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: fit-content;
 }
 
 .board-column {

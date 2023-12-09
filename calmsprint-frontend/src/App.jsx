@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Login from './Login.tsx';
 import Dashboard from './Dashboard.jsx';
 import Register from './Register.tsx';
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
 import './App.css'
 
 function App() {

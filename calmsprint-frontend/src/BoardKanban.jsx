@@ -4,6 +4,7 @@ import { json } from "react-router-dom";
 import { Modal, Button, Form, Select } from "antd";
 import Column from "./Column";
 import TaskForm from "./TaskForm";
+import "./Styles/BoardKanban.css"
 
 export default function BoardKanban(props) {
     const [toDo, setTODO] = useState([]);
@@ -112,12 +113,14 @@ export default function BoardKanban(props) {
       };
 
     return (
-        <div>
+        <div className="board-container">
             {/* Botão "New Task" */}
-            <Button type="primary" onClick={showModal}>
-                New Task
-            </Button>
+            <div className="header-board-container">
+                <Button className="header-board-container-button" type="primary" onClick={showModal}>
+                    New Task
+                </Button>
 
+            </div>
             {/* Modal para criar nova task */}
             <Modal
                 title="Create New Task"
@@ -128,16 +131,7 @@ export default function BoardKanban(props) {
                 <TaskForm onCreate={handleCreate} onCancel={handleCancel} />
             </Modal>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <h2 style={{ textAlign: "center" }}>Board</h2>
-
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        flexDirection: "row",
-                    }}
-                >
+                <div className="kanban-container">
 
                     <Column title={"To do"} tasks={toDo} id={"1"} />
                     <Column title={"Doing"} tasks={doing} id={"2"} />
