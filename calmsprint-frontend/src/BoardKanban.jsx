@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import Column from "./Column";
 import { json } from "react-router-dom";
+import { Modal, Button, Form, Select } from "antd";
+import Column from "./Column";
+import TaskForm from "./TaskForm";
 
 export default function BoardKanban(props) {
     const [toDo, setTODO] = useState([]);
     const [doing, setDoing] = useState([]);
-    const [incomplete, setIncomplete] = useState([]);
     const [done, setDone] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const userId = props.userId;
 
     useEffect(() => {
@@ -65,23 +67,83 @@ export default function BoardKanban(props) {
         return array.filter((item) => item.id != id);
     }
 
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCreate = (values) => {
+        const { description, status } = values;
+    
+        fetch("http://localhost:8080/tasks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: userId,
+            text: description,
+            status: status,
+          }),
+        })
+        .then((response) => response.json())
+        .catch((error) => {
+        console.error("Error creating task:", error);
+        });
+    
+        fetch(`http://localhost:8080/tasks/user/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            setTODO(json.filter((task) => task.status === 1));
+            setDoing(json.filter((task) => task.status === 2));
+            setDone(json.filter((task) => task.status === 3));
+        });
+
+        window.location.reload();
+        setIsModalVisible(false);
+      };
+
     return (
-        <DragDropContext onDragEnd={handleDragEnd}>
-            <h2 style={{ textAlign: "center" }}>Board</h2>
+        <div>
+            {/* Botão "New Task" */}
+            <Button type="primary" onClick={showModal}>
+                New Task
+            </Button>
 
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexDirection: "row",
-                }}
+            {/* Modal para criar nova task */}
+            <Modal
+                title="Create New Task"
+                open={isModalVisible}
+                onCancel={handleCancel}
+                footer={null}
             >
+                <TaskForm onCreate={handleCreate} onCancel={handleCancel} />
+            </Modal>
+            <DragDropContext onDragEnd={handleDragEnd}>
+                <h2 style={{ textAlign: "center" }}>Board</h2>
 
-                <Column title={"To do"} tasks={toDo} id={"1"} />
-                <Column title={"Doing"} tasks={doing} id={"2"} />
-                <Column title={"Done"} tasks={done} id={"3"} />
-            </div>
-        </DragDropContext>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexDirection: "row",
+                    }}
+                >
+
+                    <Column title={"To do"} tasks={toDo} id={"1"} />
+                    <Column title={"Doing"} tasks={doing} id={"2"} />
+                    <Column title={"Done"} tasks={done} id={"3"}  />
+                </div>
+            </DragDropContext>
+        </div>
     )
 }

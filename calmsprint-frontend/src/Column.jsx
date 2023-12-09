@@ -31,35 +31,35 @@ const TaskList = styled.div`
 
 export default function Column({ title, tasks, id }) {
 
-    return (
-        <Container className="column">
-            <Title
-              style={{
-                backgroundColor: "lightblue",
-                position: "sticky",
-              }}  
-            >
-                {title}
-            </Title>
-            
-            <Droppable droppableId={id}>
-                {(provided, snapshot) => (
-                    <TaskList
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        isDraggingOver={snapshot.isDraggingOver}
-                    >
-                        {/* Provide Your Tasks */}
-                        {
-                          tasks.map((task, index) => (
-                            <Task key={index} index={index} task={task} />
-                          ))
-                        }
+  return (
+      <Container className="column">
+          <Title
+            style={{
+              backgroundColor: "lightblue",
+              position: "sticky",
+            }}  
+          >
+              {title}
+          </Title>
+          
+          <Droppable droppableId={id}>
+              {(provided, snapshot) => (
+                  <TaskList
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      isDraggingOver={snapshot.isDraggingOver}
+                  >
+                      {/* Provide Your Tasks */}
+                      {
+                        tasks.map((task, index) => (
+                          <Task key={index} index={index} task={task} />
+                        ))
+                      }
 
-                        {provided.placeholder}
-                    </TaskList>
-                )}
-            </Droppable>              
-        </Container>
-    )
+                      {provided.placeholder}
+                  </TaskList>
+              )}
+          </Droppable>              
+      </Container>
+  )
 }
