@@ -32,7 +32,7 @@ export default (props) => {
         setTime((prevTime) => {
           if (prevTime <= 0) {
             setRunning(false);
-            setNotificationVisible(true); // Exibe a notificação quando atingir 00:00
+            setNotificationVisible(true);
             return 0;
           }
           return prevTime - 1;
@@ -172,7 +172,6 @@ export default (props) => {
         <span id="time">{formatTime()}</span>
 
         <div className="btn-container">
-          {/* Adapte os eventos onClick para chamar as funções correspondentes */}
           <button id="btn-start" onClick={startTimer}>
             Start
           </button>

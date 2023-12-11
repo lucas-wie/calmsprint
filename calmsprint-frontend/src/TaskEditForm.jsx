@@ -51,6 +51,7 @@ const TaskEditForm = ({ task, onEdit }) => {
         <Form.Item
             label="Description"
             name="description"
+            autoComplete='off'
             rules={[{ required: true, message: 'Please input the description!' }]}
         >
             <Input />

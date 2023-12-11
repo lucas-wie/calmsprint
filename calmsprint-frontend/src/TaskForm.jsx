@@ -21,6 +21,7 @@ const TaskForm = ({ onCreate, onCancel }) => {
       <Form.Item
         name="description"
         label="Description"
+        autoComplete='off'
         rules={[
           {
             required: true,

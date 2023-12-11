@@ -83,8 +83,8 @@ export default function Task({ task, index }) {
                         <div style={{ display: "flex", justifyContent: "start", padding: 2 }}>
                             <span>
                                 <small>
-                                    #{task.id}
-                                    {" "}
+                                    {}
+                                    {""}
                                 </small>
                             </span>
                         </div>
@@ -95,7 +95,7 @@ export default function Task({ task, index }) {
 
                         <Icons>
                             <div>
-                                <Avatar src={"https://joesch.moe/api/v1/random?key=" + task.id} />
+                                <Avatar src={"https://joesch.moe/api/v1/" + task.userId} />
                             </div>
                         </Icons>
                         {provided.placeholder}

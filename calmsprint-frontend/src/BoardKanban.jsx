@@ -4,7 +4,6 @@ import { json } from "react-router-dom";
 import { Modal, Button, Form, Select } from "antd";
 import Column from "./Column";
 import TaskForm from "./TaskForm";
-import { connect } from "react-redux";
 import "./Styles/BoardKanban.css"
 
 export default function BoardKanban(props) {
@@ -34,7 +33,6 @@ export default function BoardKanban(props) {
 
         if (source.droppableId == destination.droppableId) return;
 
-        // REMOVE FROM A SOURCE ARRAY
         if (source.droppableId == 1) {
             setTODO(removeItemById(draggableId, toDo));
         }
@@ -45,10 +43,8 @@ export default function BoardKanban(props) {
             setDone(removeItemById(draggableId, done));
         }
 
-        // GET ITEM
         const task = findItemById(draggableId, [...toDo, ...doing, ...done]);
 
-        // ADD ITEM
         if (destination.droppableId == 1) {
             setTODO([{ ...task, toDo: task.status === 1 }, ...toDo]);
         }

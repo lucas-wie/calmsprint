@@ -1,7 +1,5 @@
-// Tarefa.java
 package com.calmsprint.task;
 
-import com.calmsprint.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,7 +16,7 @@ public class Task {
     private Long id;
     private Long userid;
     private String text;
-    private int status; // To do, Doing, Done
+    private int status;
 
     public Task(TaskRequestDTO taskRequestDTO) {
         this.userid = taskRequestDTO.userId();

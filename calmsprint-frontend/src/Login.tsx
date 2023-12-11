@@ -1,4 +1,3 @@
-// src/Login.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Styles/Login.css';
@@ -7,26 +6,21 @@ import './Styles/Login.css';
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [error, setError] = useState<string | null>(null); // Adiciona estado para mensagem de erro
-    const navigate = useNavigate(); // Utilize useNavigate para obter a função de navegação
+    const [error, setError] = useState<string | null>(null); 
+    const navigate = useNavigate(); 
     
 
     const handleLogin = async () => {
         try {
-            // Implemente a lógica de chamada para o backend aqui
             const response = await fetch(`http://localhost:8080/login?email=${email}&password=${password}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
-            const user = await response.json();
-            //console.log(user);
-            //console.log(user.id);
-            
+            const user = await response.json();   
             
             if(response.ok) {
-                // Se o login for bem-sucedido, use a função navigate para redirecionar para /dashboard
                 navigate('/dashboard', {state: {userID: user.id}});
             }
             else {
@@ -50,6 +44,7 @@ const Login: React.FC = () => {
                         id="email"
                         className='inputs-login'
                         value={email}
+                        autoComplete='off'
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
@@ -71,7 +66,7 @@ const Login: React.FC = () => {
                         Login
                     </button>
                     <div className="register-link" onClick={() => navigate('/register')}>
-                        Registrar-se
+                        Register
                     </div>
                 </div>
             </form>

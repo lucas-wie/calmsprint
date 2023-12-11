@@ -1,4 +1,3 @@
-// src/Dashboard.tsx
 import React from 'react';
 import BoardKanban from './BoardKanban.jsx';
 import PomodoroTimer from './PomodoroTimer.jsx';

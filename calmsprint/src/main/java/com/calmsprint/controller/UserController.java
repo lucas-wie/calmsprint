@@ -1,8 +1,6 @@
 package com.calmsprint.controller;
 
 import com.calmsprint.services.AuthService;
-import com.calmsprint.task.Task;
-import com.calmsprint.task.TaskResponseDTO;
 import com.calmsprint.user.User;
 import com.calmsprint.user.UserRepository;
 import com.calmsprint.user.UserRequestDTO;

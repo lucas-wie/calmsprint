@@ -36,12 +36,13 @@ const Register: React.FC = () => {
       <h2 className='title-login'>Calmsprint</h2>
       <form className="form">
         <div className='form-item'>
-          <label htmlFor="name">Nome:</label>
+          <label htmlFor="name">Name:</label>
           <input
             type="text"
             id="name"
             className='inputs-login'
             value={name}
+            autoComplete='off'
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -52,6 +53,7 @@ const Register: React.FC = () => {
             id="email"
             className='inputs-login'
             value={email}
+            autoComplete='off'
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -67,7 +69,7 @@ const Register: React.FC = () => {
         </div>
         {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
         <button className='button-login' type="button" onClick={handleRegister}>
-          Registrar
+          Register
         </button>
       </form>
     </div>
