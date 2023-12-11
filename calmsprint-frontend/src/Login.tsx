@@ -41,31 +41,38 @@ const Login: React.FC = () => {
 
     return (
         <div className="containerLogin">
+            <h2 className='title-login'>Calmsprint</h2>
             <form className="formLogin">
-                <div>
+                <div className='form-item-login'>
                     <label htmlFor="email">Email:</label>
                     <input
                         type="email"
                         id="email"
+                        className='inputs-login'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div>
+                <div className='form-item-login'>
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"
                         id="password"
+                        className='inputs-login'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
+
                 {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-                <button type="button" onClick={handleLogin}>
-                    Login
-                </button>
-                <div className="register-link" onClick={() => navigate('/register')}>
-                    Registrar-se
+                
+                <div className='container-buttons-login'>
+                    <button className='button-login' type="button" onClick={handleLogin}>
+                        Login
+                    </button>
+                    <div className="register-link" onClick={() => navigate('/register')}>
+                        Registrar-se
+                    </div>
                 </div>
             </form>
         </div>

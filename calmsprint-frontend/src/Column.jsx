@@ -49,7 +49,6 @@ export default function Column({ title, tasks, id }) {
                       {...provided.droppableProps}
                       isDraggingOver={snapshot.isDraggingOver}
                   >
-                      {/* Provide Your Tasks */}
                       {
                         tasks.map((task, index) => (
                           <Task key={index} index={index} task={task} />

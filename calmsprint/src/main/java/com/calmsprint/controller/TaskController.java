@@ -38,13 +38,11 @@ public class TaskController {
 
     @CrossOrigin(origins = "*", allowCredentials = "false")
     @PostMapping
-    public String saveTask(@RequestBody TaskRequestDTO data) {
-        if (data.status() < 1 || data.status() > 3) {
-            return "Status inválido";
-        }
+    public TaskResponseDTO saveTask(@RequestBody TaskRequestDTO data) {
+
         Task taskData = new Task(data);
         taskRepository.save(taskData);
-        return "Success!!";
+        return new TaskResponseDTO(taskData);
     }
 
     @CrossOrigin(origins = "*", allowCredentials = "false")
@@ -59,7 +57,9 @@ public class TaskController {
 
     @CrossOrigin(origins = "*", allowCredentials = "false")
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+    public TaskResponseDTO deleteTask(@PathVariable Long id) {
+        TaskResponseDTO task = new TaskResponseDTO(taskRepository.findByTaskId(id));
         taskRepository.deleteById(id);
+        return task;
     }
 }

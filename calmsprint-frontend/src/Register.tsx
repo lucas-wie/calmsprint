@@ -1,4 +1,3 @@
-// src/Register.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Styles/Register.css';
@@ -12,7 +11,6 @@ const Register: React.FC = () => {
 
   const handleRegister = async () => {
     try {
-      // Implemente a lógica de chamada para o backend aqui
       const response = await fetch('http://localhost:8080/user', {
         method: 'POST',
         headers: {
@@ -22,10 +20,10 @@ const Register: React.FC = () => {
       });
 
       if (response.ok) {
-        navigate('/login'); // Após o registro bem-sucedido, redirecione para a tela de Login
+        navigate('/login');
       } else {
         console.error('Erro ao registrar:', response.statusText);
-        setError('Erro ao registrar. Tente novamente.');
+        setError('Erro ao registrar. Usuário já cadastrado.');
       }
     } catch (error) {
       console.error('Erro ao registrar:', error);
@@ -34,37 +32,41 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-register">
+      <h2 className='title-login'>Calmsprint</h2>
       <form className="form">
-        <div>
+        <div className='form-item'>
           <label htmlFor="name">Nome:</label>
           <input
             type="text"
             id="name"
+            className='inputs-login'
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div>
+        <div className='form-item'>
           <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
+            className='inputs-login'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className='form-item'>
           <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
+            className='inputs-login'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-        <button type="button" onClick={handleRegister}>
+        <button className='button-login' type="button" onClick={handleRegister}>
           Registrar
         </button>
       </form>

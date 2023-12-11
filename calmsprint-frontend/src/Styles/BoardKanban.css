@@ -1,6 +1,5 @@
 /* src/Styles/BoardKanban.css */
 .board-container {
-  min-height: 100vh;
   display: flex;
   align-content: center;
   flex-direction: column;

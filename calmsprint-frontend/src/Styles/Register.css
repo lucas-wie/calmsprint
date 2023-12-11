@@ -1,20 +1,40 @@
-.container {
-    /* max-width: 400px;
+.container-register {
+    max-width: 400px;
     margin: auto;
-    padding: 20px;
-    text-align: center; */
-    
+    padding: 50px;
+    text-align: center;
+    background-color: #272727;
+    color: #fff;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10%;
   }
   
   .form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+  }
+
+  .form-item {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
   
   label {
     margin-bottom: 5px;
   }
   
-  button {
-    /* margin-top: 10px; */
-  }
+.btn-register {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: fit-content;
+  padding: 0.5em;
+  border-radius: 0.5em;
+}

@@ -62,14 +62,13 @@ export default function Task({ task, index }) {
     
     return (
         <div>
-            {/* Modal para criar nova task */}
             <Modal
                 title="Update Task"
                 open={isEditing}
                 onCancel={handleEditCancel}
                 footer={null}
             >
-                <TaskEditForm task={task} onEdit={handleEdit} onCancel={handleEditCancel} />
+                <TaskEditForm task={task} onEdit={handleEdit} onCancel={handleEditCancel}  />
             </Modal>
             <Draggable draggableId={`${task.id}`} key={task.id} index={index}>
                 {(provided, snapshot) => (

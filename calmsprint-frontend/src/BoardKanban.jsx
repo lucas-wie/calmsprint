@@ -4,6 +4,7 @@ import { json } from "react-router-dom";
 import { Modal, Button, Form, Select } from "antd";
 import Column from "./Column";
 import TaskForm from "./TaskForm";
+import { connect } from "react-redux";
 import "./Styles/BoardKanban.css"
 
 export default function BoardKanban(props) {
@@ -76,10 +77,10 @@ export default function BoardKanban(props) {
         setIsModalVisible(false);
     };
 
-    const handleCreate = (values) => {
+    const handleCreate = async (values) => {
         const { description, status } = values;
     
-        fetch("http://localhost:8080/tasks", {
+        const response = await fetch("http://localhost:8080/tasks", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -90,38 +91,34 @@ export default function BoardKanban(props) {
             status: status,
           }),
         })
-        .then((response) => response.json())
-        .catch((error) => {
-        console.error("Error creating task:", error);
-        });
-    
-        fetch(`http://localhost:8080/tasks/user/${userId}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-        })
-        .then((response) => response.json())
-        .then((json) => {
-            setTODO(json.filter((task) => task.status === 1));
-            setDoing(json.filter((task) => task.status === 2));
-            setDone(json.filter((task) => task.status === 3));
-        });
+        const createdTask = await response.json();
 
-        window.location.reload();
+        
+        if (createdTask.status == 1) {
+            setTODO([...toDo, createdTask]);
+        }
+        else if (createdTask.status == 2) {
+            setDoing([...doing, createdTask]);
+        }
+        else {
+            setDone([...done, createdTask]);
+        }
+
         setIsModalVisible(false);
-      };
+
+        if(!response.ok) {
+            console.error('Erro ao fazer login:', response.statusText);
+        }
+    };
 
     return (
         <div className="board-container">
-            {/* Botão "New Task" */}
             <div className="header-board-container">
                 <Button className="header-board-container-button" type="primary" onClick={showModal}>
                     New Task
                 </Button>
 
             </div>
-            {/* Modal para criar nova task */}
             <Modal
                 title="Create New Task"
                 open={isModalVisible}

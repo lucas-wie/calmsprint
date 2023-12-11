@@ -35,7 +35,7 @@ export default (props) => {
             setNotificationVisible(true); // Exibe a notificação quando atingir 00:00
             return 0;
           }
-          return prevTime - 10;
+          return prevTime - 1;
         });
       }, 1000);
     } else {
@@ -141,7 +141,6 @@ export default (props) => {
     closeModal();
   };
 
-  // Função para exibir a notificação
   const showNotification = () => {
     notification.open({
       message: 'Sessão finalizada, hora de descansar!',

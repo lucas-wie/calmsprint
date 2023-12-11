@@ -3,7 +3,7 @@ import { Modal, Form, Input, Select, Button } from "antd";
 
 const { Option } = Select;
 
-const TaskEditForm = ({ task, onEdit, onCancel }) => {
+const TaskEditForm = ({ task, onEdit }) => {
   const [form] = Form.useForm();
 
   form.setFieldsValue({
@@ -12,7 +12,6 @@ const TaskEditForm = ({ task, onEdit, onCancel }) => {
   });
 
   const onFinish = (values) => {
-    // Enviar os dados editados para a API
     fetch(`http://localhost:8080/tasks/${task.id}`, {
       method: 'PUT',
       headers: {
@@ -26,15 +25,13 @@ const TaskEditForm = ({ task, onEdit, onCancel }) => {
     })
     .then(() => {
         onEdit();
-        onCancel();
     })
     .catch((error) => {
         console.error("Error creating task:", error);
     });
   };
 
-  const onDelete = () => {
-    // Enviar os dados editados para a API
+  const onDelete = async () => {
     fetch(`http://localhost:8080/tasks/${task.id}`, {
       method: 'DELETE',
       headers: {
@@ -42,11 +39,10 @@ const TaskEditForm = ({ task, onEdit, onCancel }) => {
       }
     })
     .then(() => {
-        onEdit();
-        onCancel();
+      onEdit();
     })
     .catch((error) => {
-        console.error("Error deleting task:", error);
+        console.error("Error creating task:", error);
     });
   };
 
